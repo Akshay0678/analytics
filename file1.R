@@ -1,2 +1,7 @@
+#comment by starting #
 women
-men
+#control+enterto execute command - its a comment
+?women
+
+#?before function to seek help
+
