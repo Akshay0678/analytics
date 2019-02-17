@@ -1,154 +1,7 @@
 #comment by starting #
-women
 #control+enterto execute command - its a comment
-?women
 
 #?before function to seek help
-
-mtcars
-?mtcars
-#mtcars is a dataframe
-mean(mtcars$mpg)
-?names(mtcars)
-names(mtcars)
-mean(mtcars$hp)
-colMeans(mtcars)
-rowMeans(mtcars)
-head(mtcars)   #first 6 rows
-head(mtcars, 2)
-rowMeans(head(mtcars, 2)) #mean of rowwise data
-?head(mtcars, 2)  #info about head
-tail(mtcars)      #last 6 rows
-tail(mtcars, 1)   #last 1 row
-
-hist(mtcars$mpg)   #histogram of mtcars - mpg
-hist(mtcars$mpg, breaks=3)
-
-#vectors
-x = c(1,2,3,5,6)
-x
-class(x)
-
-x1 = c(2L, 9L)
-class(x1)
-class(mtcars)
-
-x3 = c("a", 6, 'B', 'Akshay')
-class(x3)
-
-x4 = c(TRUE, FALSE, T, F)
-x4
-class(x4)
-
-x5 = 1:100000
-x5
-class(x5)
-(x5 = 1:100000)   #only for learning purposes - assigns and prints together in one command
-
-x6 <- 2   #default way of assigning a value to a variable ; another way is =
-x6
-class (x6)
-
-x7 = rnorm(1000000)
-x7
-mean(x7)
-sd(x7)
-length(x7)
-density(x7)
-plot(density(x7))
-hist(x7)
-hist(x7, freq=F)
-points(density(x7))
-?points(density(x7))
-?hist(x7, freq=F)
-
-x8 = rnorm(100, mean = 60, sd = 10)
-mean(x8)
-sd(x8)
-length(x8)
-plot(density(x8))
-hist(x8, freq = F)
-points(density(x8))
-
-library(e1071)   #loads library e1071
-?kurtosis
-kurtosis(x8)
-skewness(x8)
-
-x9 = runif(100, 30, 90)
-x9
-trunc(x9)
-round(x9, 1)
-floor (x9)
-ceiling(x9)
-?trunc
-x10 = ceiling(x9)
-x10
-hist(x9, freq = F)
-points(density(x9))
-
-sort(x10)
-sort(x10, decreasing = T)
-
-mean(x10)
-median(x10)
-storage.mode(x10)
-class(x10)
-class(x10) == mode(x10)
-?mode
-?class
-mode(x10)
-?storage.mode
-typeof(x10)
-
-x10 [x10 > 60]
-x10
-x10[1:10]
-x10[20:30]
-x10[-c(1:20)]
-x10[c(1,5,7)]
-?c
-
-
-
-#matrices
-?matrix
-is.matrix(x10)
-is.vector(x10)
-is.array(x10)
-
-m1 = matrix(data = 1:24, nrow = 6, ncol = 4)
-m1
-dim(m1)
-m2 = matrix(data = 1:104, ncol=8)
-m2
-
-m3 = matrix(data = 1:28, ncol = 4, byrow = T)   #, dimnames = list("a", "b", "c", "d"))
-m3
-
-colnames(m3) = month.abb[1:4]
-rownames(m3) = paste('Product',1:7, sep='_')
-m3
-
-rowMeans(m3)
-colMeans(m3)
-rowSums(m3)
-colSums(m3)
-m1[ , 1:2]
-m3[ , 1:2]
-m3[c(1,3,5), ]
-rowSums(m3[c(1,3,5), ])
-m3[, c('Feb', 'Apr')]
-m3
-?rowSums
-?rowsum
-m3[1][1] = NULL
-m3
-logical(0)
-logical(1)
-logical(2)
-?logical
-
 
 #data.frame
 n = 30   #number of students
@@ -218,10 +71,44 @@ students[students$gender=='F' | students$college=='SRCC', ] #'sname']
 library(dplyr)
 #highest from all colleges
 students %>% filter(gender=='M' & marks1 > 60)
+#All students with Gender Male and marks1 more than 60
 #genderwise summary
 students %>% group_by(gender) %>% summarise(mean(marks1), mean(marks2))
+#mean marks of subject 1 and subject 2 of all students Gender-wise
 students %>% group_by(college) %>% summarise(max(marks1), max(marks2))
 students %>% filter(college == 'FMS') %>% select(marks1, marks2)
 
-students
-     
+students %>% group_by(college, gender) %>% summarise(count_Total=n()) 
+?n()
+#n() is a dplyr count function
+
+students %>% tally()
+?tally()
+students %>% summarise(n())
+# 85 and 87 are equivalent. Tally() is a wrapper function for n()
+students %>% group_by(college, gender) %>% summarise(count_Total=n(), mean(marks1), mean(marks2))
+
+students %>% mutate(Total_Marks = marks1 + marks2)
+?mutate
+#mutate adds new variables and preserves existing.
+
+students %>% transmute(sname, Total_Marks = marks1 + marks2)
+#transmute adds new variables and drops existing
+
+students %>% mutate(Total_Marks = marks1 + marks2) %>% arrange(Total_Marks)
+?arrange
+#arrange rows by variables, use a negative is decreasing order is required. By default, increasing.
+
+students %>% mutate(Total_Marks = marks1 + marks2) %>% arrange(Total_Marks) %>% head(n=2)
+?head
+#prints first 2 rows
+
+students %>% slice(seq(1,30,2)) #every alternate row is printed
+?slice   #selects rows by position
+
+students %>% sample_n(5)   #gives 5 random samples from the data
+students %>% sample_frac(0.3)   #gives 30% samples by random
+
+students %>% transmute(sname, Total_marks = marks1+marks2) %>% filter(Total_marks == max(Total_marks))
+?filter
+#students %>% transmute(sname, Total_marks = marks1+marks2) %>% summarise(top_n(2))
